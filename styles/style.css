@@ -14,12 +14,30 @@ body{
 
 .container{
     display:flex;
-    align-items: center;
+    flex-direction: column;
     justify-content: space-around;
+    background-color:lightgray;
 
 }
 .column{
     height:60vh;
-    width:10vw;
-    background-color: antiquewhite;
+    
+    
+}
+
+
+.btn-div{
+    display: flex;
+    justify-content: space-around;
+}
+
+.columns{
+    display: flex;
+    justify-content: space-around;
+}
+
+.btn{
+    cursor: pointer;
+    margin: 10px;
+    padding-bottom: 10px;
 }
