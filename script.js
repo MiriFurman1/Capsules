@@ -10,6 +10,8 @@ const hobby=document.querySelector(".hobby")
 const buttonDiv=document.querySelector(".btn-div")
 const editBtns=document.querySelector(".editBtns")
 const deleteBtns=document.querySelector(".deleteBtns")
+const search=document.querySelector("input")
+const values=document.querySelector("#values")
 let idFlag=false
 let firstFlag=false
 let lastFlag=false
@@ -36,6 +38,28 @@ const fetchData= async ()=>{
 fetchData()
 
 
+search.addEventListener("keyup",e=>{
+    let userArrTemp=userArr;
+    if (e.key==="Enter"){
+        let paragraphs=document.querySelectorAll("p")
+        paragraphs.forEach(x=>{
+            x.remove()
+        })
+        let buttons = document.querySelectorAll("button");
+        buttons.forEach(x=>x.remove())
+        userArrTemp= userArrTemp.filter(x=>x[values.value]==search.value)
+        if(!search.value){
+            userArrTemp=userArr
+        }
+        userArrTemp.forEach((x,i)=>{
+            printFunc(x,i)
+        })
+
+    }
+    
+
+    })
+
 const loopOverArr= async (arr,pos=0)=>{
 for(let i=0;i<arr.length;i++){
     let user=await arr[i]
@@ -43,15 +67,7 @@ for(let i=0;i<arr.length;i++){
     await loopOverId(user.id,i+pos)
     printFunc(user,i+pos)
 
-    let editBtn=document.createElement("button")
-    editBtn.classList.add(`${i+pos}`)
-    editBtn.innerHTML="edit"
-    editBtns.appendChild(editBtn)
-
-    let deleteBtn=document.createElement("button")
-    deleteBtn.classList.add(`${i+pos}`)
-    deleteBtn.innerHTML="delete"
-    deleteBtns.appendChild(deleteBtn)
+ 
 }
 }
 
@@ -70,6 +86,7 @@ const printFunc=async(user,i)=>{
     printHelper(5,gender,user,i)
     printHelper(6,city,user,i)
     printHelper(7,hobby,user,i)
+    addButtons(i)
 
 }
 
@@ -81,6 +98,17 @@ const printHelper=async(dataIndex,div,user,i)=>{
     div.appendChild(element)
 }
 
+const addButtons=(i)=>{
+    let editBtn=document.createElement("button")
+    editBtn.classList.add(`${i}`)
+    editBtn.innerHTML="edit"
+    editBtns.appendChild(editBtn)
+
+    let deleteBtn=document.createElement("button")
+    deleteBtn.classList.add(`${i}`)
+    deleteBtn.innerHTML="delete"
+    deleteBtns.appendChild(deleteBtn)
+}
 
 const loopOverId= async(id,i)=>{
 let response= await fetch(`https://capsules7.herokuapp.com/api/user/${id}`)
@@ -145,15 +173,17 @@ const sortHobby=(a,b)=>a.hobby.localeCompare(b.hobby)
 deleteBtns.addEventListener("click",x=>{
 
     userArr.splice(x.target.classList.value,1)
-   
     let paragraphs=document.querySelectorAll("p")
     paragraphs.forEach(x=>{
         x.remove()
     })
+    let buttons = document.querySelectorAll("button");
+    buttons.forEach(x=>x.remove())
     userArr.forEach((x,i)=>{
+        
         printFunc(x,i)
     })
-    
+
     
 })
 

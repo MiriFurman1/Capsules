@@ -11,7 +11,20 @@
 body{
     background-color:#e3b4a6;
 }
-
+/* Style the "active" element to highlight the current page */
+.navbar a.active {
+    background-color: #2196F3;
+    color: white;
+  }
+  
+  /* Style the search box inside the navigation bar */
+  .navbar input[type=text] {
+    width:500px;
+    padding: 6px;
+    border: none;
+    margin: 15px;
+    font-size: 17px;
+  }
 .container{
     display:flex;
     flex-direction: column;
