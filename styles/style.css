@@ -9,19 +9,20 @@
 }
 
 body{
-    background-color:#E5E9E2 ;
+    background-color:#e3b4a6;
 }
 
 .container{
     display:flex;
     flex-direction: column;
     justify-content: space-around;
-    background-color:lightgray;
+    background-color:#A27E8E;
+    width:100vw
 
 }
 .column{
     height:60vh;
-    
+    width:10vw;
     
 }
 
@@ -29,15 +30,76 @@ body{
 .btn-div{
     display: flex;
     justify-content: space-around;
+    width:85vw;
 }
 
 .columns{
     display: flex;
     justify-content: space-around;
+    padding-right: 5vw;
+    
 }
 
 .btn{
     cursor: pointer;
     margin: 10px;
     padding-bottom: 10px;
+    width:10vw;
 }
+
+.editBtns{
+    display: flex;
+    flex-direction: column;
+    width:70px
+}
+
+.deleteBtns{
+    display: flex;
+    flex-direction: column;
+    width:70px;
+}
+
+.element-padding{
+    padding:2px
+}
+
+
+.columns .hobby{
+    width:15vw;
+    
+}
+
+@media(max-width:950px){
+    .btn-div{
+        width:73vw
+    }
+
+    .capsule{
+        width:5vw;
+    }
+    .age{
+        width:5vw;
+    }
+    .city{
+        width:9vw;
+    }
+    .gender{
+        width:5vw
+    }
+
+    .deleteBtns{
+        width:50px
+    }
+    .editBtns{
+        width:50px
+    }
+
+.column{
+    height: 80vh;
+}
+ .columns{
+        justify-content:safe;
+    
+    }
+}
+
