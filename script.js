@@ -1,3 +1,4 @@
+// setting the variables
 const container=document.querySelector(".container")
 const ids=document.querySelector(".ids")
 const firstNames=document.querySelector(".firstNames")
@@ -24,7 +25,7 @@ let hobbyFlag=false
 let userArr=[]
 
 
-const fetchData= async ()=>{
+const fetchData= async ()=>{ //getting the data from the two groups 
     let response=await fetch("https://capsules7.herokuapp.com/api/group/one")
     let groupOne=await response.json()
     response=await fetch("https://capsules7.herokuapp.com/api/group/two")
@@ -38,20 +39,20 @@ const fetchData= async ()=>{
 fetchData()
 
 
-search.addEventListener("keyup",e=>{
-    let userArrTemp=userArr;
+search.addEventListener("keyup",e=>{ 
+    let userArrTemp=userArr; //use temporary arr to keep the userarr not changed
     if (e.key==="Enter"){
-        let paragraphs=document.querySelectorAll("p")
-        paragraphs.forEach(x=>{
+        let paragraphs=document.querySelectorAll("p") 
+        paragraphs.forEach(x=>{ //remove all data from the page
             x.remove()
         })
         let buttons = document.querySelectorAll("button");
-        buttons.forEach(x=>x.remove())
-        userArrTemp= userArrTemp.filter(x=>x[values.value]==search.value)
+        buttons.forEach(x=>x.remove()) //remove all buttons from the page
+        userArrTemp= userArrTemp.filter(x=>x[values.value]==search.value) //if arr at chosen option=search=>filter
         if(!search.value){
-            userArrTemp=userArr
+            userArrTemp=userArr //if search is empty, will print all the users
         }
-        userArrTemp.forEach((x,i)=>{
+        userArrTemp.forEach((x,i)=>{ //for ech user at the new arr
             printFunc(x,i)
         })
 
@@ -71,15 +72,15 @@ for(let i=0;i<arr.length;i++){
 }
 }
 
-const makeUserArr=async (user)=>{
+const makeUserArr=async (user)=>{ //push the data from two user groups into one arr
     userArr.push(user)
     
 }
 
 
-const printFunc=async(user,i)=>{
-    printHelper(0,ids,user,i) //! print id
-    printHelper(1,firstNames,user,i) //! print first name
+const printFunc=async(user,i)=>{ //prints data and buttons to page with helper functions
+    printHelper(0,ids,user,i) 
+    printHelper(1,firstNames,user,i) 
     printHelper(2,lastNames,user,i)
     printHelper(3,capsule,user,i)
     printHelper(4,age,user,i)
@@ -90,7 +91,7 @@ const printFunc=async(user,i)=>{
 
 }
 
-const printHelper=async(dataIndex,div,user,i)=>{
+const printHelper=async(dataIndex,div,user,i)=>{ //runs over each element and prints the data for every user+add index class
     let element=document.createElement("p")
     element.classList.add(i)
     element.innerHTML=Object.values(user)[dataIndex]
@@ -98,7 +99,7 @@ const printHelper=async(dataIndex,div,user,i)=>{
     div.appendChild(element)
 }
 
-const addButtons=(i)=>{
+const addButtons=(i)=>{ //gets the i and makes as many buttons as needed
     let editBtn=document.createElement("button")
     editBtn.classList.add(`${i}`)
     editBtn.innerHTML="edit"
@@ -110,7 +111,7 @@ const addButtons=(i)=>{
     deleteBtns.appendChild(deleteBtn)
 }
 
-const loopOverId= async(id,i)=>{
+const loopOverId= async(id,i)=>{ //add the additional data about each id to the arr
 let response= await fetch(`https://capsules7.herokuapp.com/api/user/${id}`)
 let data=await response.json()
 
@@ -126,10 +127,14 @@ userData["hobby"]=data.hobby
 
 
 buttonDiv.addEventListener("click",(e)=>{
-    let paragraphs=document.querySelectorAll("p")
+    let paragraphs=document.querySelectorAll("p")//remove everything from the page
     paragraphs.forEach(x=>{
         x.remove()
     })
+    let buttons = document.querySelectorAll("button"); //remove the buttons
+    buttons.forEach(x=>x.remove()) 
+
+    //flag if for us to know if we are sorting normally or reverse
     idFlag= sortingBackAndForth("id-btn",sortId,e,idFlag)
     firstFlag=sortingBackAndForth("firstName-btn",sortFirst,e,firstFlag)
     lastFlag=sortingBackAndForth("lastName-btn",sortLast,e,lastFlag)
@@ -141,24 +146,26 @@ buttonDiv.addEventListener("click",(e)=>{
 
 })
 
-const sortingBackAndForth = (className,sortingFunc,e,flag) => {
-    if(e.target.classList.contains(className)){
+const sortingBackAndForth = (className,sortingFunc,e,flag) => { 
+    if(e.target.classList.contains(className)){ //if the click target is a specific column sort this column
         if(!flag){
-            userArr=userArr.sort(sortingFunc)
+            userArr=userArr.sort(sortingFunc) //every column has it own sorting func
             flag=true;
         }
         else if(flag){
-            userArr=(userArr.sort(sortingFunc)).reverse()
+            userArr=(userArr.sort(sortingFunc)).reverse() //reverse if sorting from the end first
             flag=false;
         }
         
-        userArr.forEach((x,i)=>{
+        userArr.forEach((x,i)=>{ //print for each item of the new arr
             printFunc(x,i)
         })
-        return flag
+        return flag //return the flag, so the next time you click it will be changed
     }
 }
 
+//the sorting func gets each object from the array and compares between them
+//locale compare is used because it's a string
 const sortId =(a,b) => a.id.localeCompare(b.id)
 const sortFirst=(a,b)=>a.firstName.localeCompare(b.firstName)
 const sortLast=(a,b)=>a.lastName.localeCompare(b.lastName)
@@ -172,22 +179,22 @@ const sortHobby=(a,b)=>a.hobby.localeCompare(b.hobby)
 
 deleteBtns.addEventListener("click",x=>{
 
-    userArr.splice(x.target.classList.value,1)
-    let paragraphs=document.querySelectorAll("p")
+    userArr.splice(x.target.classList.value,1)//remove the object from the arr at the row we want to delete
+    let paragraphs=document.querySelectorAll("p") //delete all the text from the page
     paragraphs.forEach(x=>{
         x.remove()
     })
-    let buttons = document.querySelectorAll("button");
+    let buttons = document.querySelectorAll("button");//delete all the buttons from the page
     buttons.forEach(x=>x.remove())
     userArr.forEach((x,i)=>{
         
-        printFunc(x,i)
+        printFunc(x,i) //print the new arr without the deleted object
     })
 
     
 })
 
-editBtns.addEventListener("click",x=>{
+editBtns.addEventListener("click",x=>{ //make the specific eow editable
  let rowAtI=document.getElementsByClassName(`${x.target.classList.value}`)
 
 
@@ -198,8 +205,6 @@ editBtns.addEventListener("click",x=>{
     rowAtI[5].contentEditable="true"
     rowAtI[6].contentEditable="true"
     rowAtI[7].contentEditable="true"
- 
-    
-    
+
 
 })
